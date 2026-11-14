@@ -1,0 +1,57 @@
+name: Build IVI for Windows
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build executable
+        run: |
+          pyinstaller build/ivi.spec --noconfirm --clean
+        shell: cmd
+
+      - name: List output
+        run: dir dist
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: IVI-Windows
+          path: |
+            dist/IVI.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Create ZIP (optional)
+        if: success()
+        run: |
+          Compress-Archive -Path dist/IVI.exe -DestinationPath dist/IVI-Windows.zip
+        shell: pwsh
+
+      - name: Upload ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: IVI-Windows-ZIP
+          path: dist/IVI-Windows.zip
+          retention-days: 30

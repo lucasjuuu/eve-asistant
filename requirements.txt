@@ -1,0 +1,26 @@
+# Core
+PySide6>=6.6.0
+openai>=1.40.0
+keyring>=25.0.0
+numpy>=1.26.0
+requests>=2.31.0
+
+# Voz
+SpeechRecognition>=3.10.0
+PyAudio>=0.2.14
+pygame>=2.5.0
+
+# Control del sistema
+pyautogui>=0.9.54
+pyperclip>=1.8.2
+Pillow>=10.0.0
+
+# WhatsApp
+pywhatkit>=5.4
+
+# Recordatorios / notificaciones Windows
+win10toast>=0.9; sys_platform == "win32"
+plyer>=2.1.0
+
+# Empaquetado (solo desarrollo)
+# pyinstaller>=6.0.0
